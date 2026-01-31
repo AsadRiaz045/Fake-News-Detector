@@ -1,7 +1,7 @@
 import streamlit as st
 import torch
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import BertTokenizer, AutoModelForSequenceClassification
 import streamlit as st
 import torch
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
@@ -25,7 +25,7 @@ def load_model():
     model_path ="Asadriaz525/fake-news-detector"
     
     try:
-        tokenizer = tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+        tokenizer = tokenizer = BertTokenizer.from_pretrained(model_path)
         model = AutoModelForSequenceClassification.from_pretrained(model_path)
         return tokenizer, model
     except Exception as e:
@@ -109,6 +109,7 @@ if st.button("🔍 Check Authenticity"):
 st.markdown("---")
 
 st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
+
 
 
 
