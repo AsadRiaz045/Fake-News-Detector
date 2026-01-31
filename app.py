@@ -18,7 +18,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     # Model wahi dhoondo jahan app.py parri hai
-    model_path = "./" 
+    model_path = "model_path = "Asadriaz525/fake-news-detector" 
     
     try:
         tokenizer = DistilBertTokenizer.from_pretrained(model_path)
@@ -103,4 +103,5 @@ if st.button("🔍 Check Authenticity"):
 
 # --- FOOTER ---
 st.markdown("---")
+
 st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
