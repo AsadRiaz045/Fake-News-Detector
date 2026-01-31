@@ -1,10 +1,7 @@
 import streamlit as st
 import torch
 import numpy as np
-from transformers import BertTokenizer, AutoModelForSequenceClassification
-import streamlit as st
-import torch
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+from transformers import BertTokenizer, BertForSequenceClassification
 import time
 
 # --- 1. PAGE SETUP ---
@@ -18,15 +15,16 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. LOAD MODEL (CORRECT PATH) ---
+# --- 2. LOAD MODEL (UPDATED TO FIX CONFIG ERROR) ---
 @st.cache_resource
 def load_model():
-    # Model wahi dhoondo jahan app.py parri hai
-    model_path ="Asadriaz525/fake-news-detector"
+    # Hugging Face Model Path
+    model_path = "Asadriaz525/fake-news-detector"
     
     try:
-        tokenizer = tokenizer = BertTokenizer.from_pretrained(model_path)
-        model = AutoModelForSequenceClassification.from_pretrained(model_path)
+        # Hum zabardasti bata rahe hain ke yeh BERT hai (Taake error na aye)
+        tokenizer = BertTokenizer.from_pretrained(model_path)
+        model = BertForSequenceClassification.from_pretrained(model_path)
         return tokenizer, model
     except Exception as e:
         st.error(f"❌ Error loading model: {e}")
@@ -107,8 +105,8 @@ if st.button("🔍 Check Authenticity"):
 
 # --- FOOTER ---
 st.markdown("---")
+st.markdown("🚀 *Powered by BERT & Streamlit* | Developed by Asad")
 
-st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
 
 
 
