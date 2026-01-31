@@ -25,7 +25,7 @@ def load_model():
     model_path ="Asadriaz525/fake-news-detector"
     
     try:
-        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        tokenizer = tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
         model = AutoModelForSequenceClassification.from_pretrained(model_path)
         return tokenizer, model
     except Exception as e:
@@ -109,6 +109,7 @@ if st.button("🔍 Check Authenticity"):
 st.markdown("---")
 
 st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
+
 
 
 
