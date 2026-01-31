@@ -1,5 +1,9 @@
 import streamlit as st
 import torch
+import numpy as np
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import streamlit as st
+import torch
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import time
 
@@ -105,5 +109,6 @@ if st.button("🔍 Check Authenticity"):
 st.markdown("---")
 
 st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
+
 
 
