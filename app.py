@@ -21,8 +21,8 @@ def load_model():
     model_path = "model_path = "Asadriaz525/fake-news-detector" 
     
     try:
-        tokenizer = DistilBertTokenizer.from_pretrained(model_path)
-        model = DistilBertForSequenceClassification.from_pretrained(model_path)
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        model = AutoModelForSequenceClassification.from_pretrained(model_path)
         return tokenizer, model
     except Exception as e:
         st.error(f"❌ Error loading model: {e}")
@@ -105,3 +105,4 @@ if st.button("🔍 Check Authenticity"):
 st.markdown("---")
 
 st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
+
