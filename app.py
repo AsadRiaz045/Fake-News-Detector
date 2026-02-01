@@ -20,11 +20,11 @@ st.markdown("""
 def load_model():
     # Hugging Face Repo Name
     model_path = "Asadriaz525/fake-news-detector"
-    # Wo Folder jahan files chupi hui hain (Screenshot wala naam)
+    # The specific subfolder where model files are located
     folder_name = "Fake news detector"
     
     try:
-        # Hum code ko bata rahay hain ke folder ke andar dekho
+        # Load tokenizer and model directly from the subfolder
         tokenizer = BertTokenizer.from_pretrained(model_path, subfolder=folder_name)
         model = BertForSequenceClassification.from_pretrained(model_path, subfolder=folder_name)
         return tokenizer, model
@@ -69,38 +69,42 @@ if st.button("🔍 Check Authenticity"):
         prediction = torch.argmax(probabilities, dim=1).item()
         confidence = probabilities[0][prediction].item() * 100
         
-        # Probabilities
+        # Extract Probabilities
         prob_0 = probabilities[0][0].item() * 100
         prob_1 = probabilities[0][1].item() * 100
         
         progress_bar.progress(100)
         status_text.empty()
 
-        # --- DISPLAY RESULT ---
+        # --- DISPLAY RESULT (FINAL LOGIC) ---
         st.divider()
         
-        # Prediction 0 = REAL
-        if prediction == 0:
+        # Logic Swapped based on model behavior
+        
+        # If Prediction is 1 -> IT IS FAKE NEWS (Red)
+        if prediction == 1:
+            st.error(f"## 🚨 FAKE NEWS")
+            st.caption(f"Confidence: {confidence:.2f}%")
+        
+        # If Prediction is 0 -> IT IS REAL NEWS (Green)
+        else:
             st.success(f"## ✅ REAL NEWS")
             st.caption(f"Confidence: {confidence:.2f}%")
             st.balloons()
         
-        # Prediction 1 = FAKE
-        else:
-            st.error(f"## 🚨 FAKE NEWS")
-            st.caption(f"Confidence: {confidence:.2f}%")
-        
-        # Analytics
+        # Analytics Section
         st.write("### 📊 AI Analysis")
         col1, col2 = st.columns(2)
         
+        # Metrics Display
         with col1:
-            st.metric(label="Real Probability", value=f"{prob_0:.1f}%")
-        with col2:
             st.metric(label="Fake Probability", value=f"{prob_1:.1f}%")
+        with col2:
+            st.metric(label="Real Probability", value=f"{prob_0:.1f}%")
             
-        st.progress(int(prob_0))
-        st.caption("Blue bar indicates chance of being 'Real'.")
+        # Progress bar indicates the "Fake" score
+        st.progress(int(prob_1))
+        st.caption("Bar indicates the probability of being 'Fake'.")
 
 # --- FOOTER ---
 st.markdown("---")
