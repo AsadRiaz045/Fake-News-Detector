@@ -15,16 +15,18 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. LOAD MODEL (UPDATED TO FIX CONFIG ERROR) ---
+# --- 2. LOAD MODEL (SUBFOLDER FIX) ---
 @st.cache_resource
 def load_model():
-    # Hugging Face Model Path
+    # Hugging Face Repo Name
     model_path = "Asadriaz525/fake-news-detector"
+    # Wo Folder jahan files chupi hui hain (Screenshot wala naam)
+    folder_name = "Fake news detector"
     
     try:
-        # Hum zabardasti bata rahe hain ke yeh BERT hai (Taake error na aye)
-        tokenizer = BertTokenizer.from_pretrained(model_path)
-        model = BertForSequenceClassification.from_pretrained(model_path)
+        # Hum code ko bata rahay hain ke folder ke andar dekho
+        tokenizer = BertTokenizer.from_pretrained(model_path, subfolder=folder_name)
+        model = BertForSequenceClassification.from_pretrained(model_path, subfolder=folder_name)
         return tokenizer, model
     except Exception as e:
         st.error(f"❌ Error loading model: {e}")
@@ -45,7 +47,7 @@ if st.button("🔍 Check Authenticity"):
     elif model is None:
         st.error("Model files not found! Please check folder structure.")
     else:
-        # Animation (Thora Real lagne ke liye)
+        # Animation
         progress_bar = st.progress(0)
         status_text = st.empty()
         
@@ -67,48 +69,39 @@ if st.button("🔍 Check Authenticity"):
         prediction = torch.argmax(probabilities, dim=1).item()
         confidence = probabilities[0][prediction].item() * 100
         
-        # Probabilities for Chart
+        # Probabilities
         prob_0 = probabilities[0][0].item() * 100
         prob_1 = probabilities[0][1].item() * 100
         
         progress_bar.progress(100)
         status_text.empty()
 
-        # --- DISPLAY RESULT (SWAPPED LOGIC) ---
+        # --- DISPLAY RESULT ---
         st.divider()
         
-        # Yahan humne logic badal di hai taake sahi jawab aye
-        # Agar Prediction 0 hai -> TO REAL NEWS HAI
+        # Prediction 0 = REAL
         if prediction == 0:
             st.success(f"## ✅ REAL NEWS")
             st.caption(f"Confidence: {confidence:.2f}%")
             st.balloons()
         
-        # Agar Prediction 1 hai -> TO FAKE NEWS HAI
+        # Prediction 1 = FAKE
         else:
             st.error(f"## 🚨 FAKE NEWS")
             st.caption(f"Confidence: {confidence:.2f}%")
         
-        # Detailed Analytics
+        # Analytics
         st.write("### 📊 AI Analysis")
         col1, col2 = st.columns(2)
         
-        # Note: Chart labels bhi update kar diye hain
         with col1:
             st.metric(label="Real Probability", value=f"{prob_0:.1f}%")
         with col2:
             st.metric(label="Fake Probability", value=f"{prob_1:.1f}%")
             
-        # Bar Chart showing Real Probability
         st.progress(int(prob_0))
         st.caption("Blue bar indicates chance of being 'Real'.")
 
 # --- FOOTER ---
 st.markdown("---")
 st.markdown("🚀 *Powered by BERT & Streamlit* | Developed by Asad")
-
-
-
-
-
-
