@@ -34,3 +34,7 @@ If you want to run this project on your local machine, follow these steps:
    ```bash
    git clone https://github.com/AsadRiaz045/Fake-News-Detector.git
    cd Fake-News-Detector
+2.**Install dependencies**
+pip install -r requirements.txt
+3.**run the app**
+streamlit run app.py
