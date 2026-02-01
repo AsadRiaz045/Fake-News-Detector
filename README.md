@@ -26,13 +26,11 @@ Check out the live application here: **[Click to View App](https://fake-news-det
 ├── requirements.txt        # List of dependencies
 ├── README.md               # Project documentation
 └── .gitignore             # Files to ignore
-⚙️ How to Run Locally
-If you want to run this project on your local machine, follow these steps:
-1.Clone the repository
-git clone [https://github.com/AsadRiaz045/Fake-News-Detector.git](https://github.com/AsadRiaz045/Fake-News-Detector.git)
-cd Fake-News-Detector
-2.Install dependencies
-pip install -r requirements.txt
-3.Run the app
-streamlit run app.py
+## ⚙️ How to Run Locally
 
+If you want to run this project on your local machine, follow these steps:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/AsadRiaz045/Fake-News-Detector.git
+   cd Fake-News-Detector
