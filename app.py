@@ -1,7 +1,7 @@
 import streamlit as st
 import torch
-import numpy as np
-from transformers import BertTokenizer, BertForSequenceClassification
+# Aap ka original Import (DistilBert)
+from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import time
 
 # --- 1. PAGE SETUP ---
@@ -15,18 +15,18 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. LOAD MODEL (SUBFOLDER FIX) ---
+# --- 2. LOAD MODEL (SIRF YAHAN CHANGE KIYA HAI) ---
 @st.cache_resource
 def load_model():
-    # Hugging Face Repo Name
+    # Hugging Face ka rasta (Path)
     model_path = "Asadriaz525/fake-news-detector"
-    # The specific subfolder where model files are located
+    # Wo folder jahan files parri hain
     folder_name = "Fake news detector"
     
     try:
-        # Load tokenizer and model directly from the subfolder
-        tokenizer = BertTokenizer.from_pretrained(model_path, subfolder=folder_name)
-        model = BertForSequenceClassification.from_pretrained(model_path, subfolder=folder_name)
+        # Hum wapis DistilBert use kar rahay hain (Jesa aap ke code mein tha)
+        tokenizer = DistilBertTokenizer.from_pretrained(model_path, subfolder=folder_name)
+        model = DistilBertForSequenceClassification.from_pretrained(model_path, subfolder=folder_name)
         return tokenizer, model
     except Exception as e:
         st.error(f"❌ Error loading model: {e}")
@@ -55,7 +55,7 @@ if st.button("🔍 Check Authenticity"):
         progress_bar.progress(30)
         time.sleep(0.3)
         
-        status_text.text("🤖 Analyzing patterns with BERT...")
+        status_text.text("🤖 Analyzing patterns with DistilBERT...")
         progress_bar.progress(70)
         
         # --- PREDICTION LOGIC ---
@@ -69,43 +69,39 @@ if st.button("🔍 Check Authenticity"):
         prediction = torch.argmax(probabilities, dim=1).item()
         confidence = probabilities[0][prediction].item() * 100
         
-        # Extract Probabilities
+        # Probabilities
         prob_0 = probabilities[0][0].item() * 100
         prob_1 = probabilities[0][1].item() * 100
         
         progress_bar.progress(100)
         status_text.empty()
 
-        # --- DISPLAY RESULT (FINAL LOGIC) ---
+        # --- DISPLAY RESULT (AAP KA ORIGINAL LOGIC) ---
         st.divider()
         
-        # Logic Swapped based on model behavior
-        
-        # If Prediction is 1 -> IT IS FAKE NEWS (Red)
-        if prediction == 1:
-            st.error(f"## 🚨 FAKE NEWS")
-            st.caption(f"Confidence: {confidence:.2f}%")
-        
-        # If Prediction is 0 -> IT IS REAL NEWS (Green)
-        else:
+        # Prediction 0 = REAL (Green)
+        if prediction == 0:
             st.success(f"## ✅ REAL NEWS")
             st.caption(f"Confidence: {confidence:.2f}%")
             st.balloons()
         
-        # Analytics Section
+        # Prediction 1 = FAKE (Red)
+        else:
+            st.error(f"## 🚨 FAKE NEWS")
+            st.caption(f"Confidence: {confidence:.2f}%")
+        
+        # Detailed Analytics
         st.write("### 📊 AI Analysis")
         col1, col2 = st.columns(2)
         
-        # Metrics Display
         with col1:
-            st.metric(label="Fake Probability", value=f"{prob_1:.1f}%")
-        with col2:
             st.metric(label="Real Probability", value=f"{prob_0:.1f}%")
+        with col2:
+            st.metric(label="Fake Probability", value=f"{prob_1:.1f}%")
             
-        # Progress bar indicates the "Fake" score
-        st.progress(int(prob_1))
-        st.caption("Bar indicates the probability of being 'Fake'.")
+        st.progress(int(prob_0))
+        st.caption("Blue bar indicates chance of being 'Real'.")
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("🚀 *Powered by BERT & Streamlit* | Developed by Asad")
+st.markdown("🚀 *Powered by DistilBERT & Streamlit* | Developed by Asad")
